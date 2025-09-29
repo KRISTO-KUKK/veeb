@@ -1,0 +1,29 @@
+{
+  "name": "veeb_kukk",
+  "version": "1.0.0",
+  "description": "Tarkvaraarendajate rühma veebiprogrammeerimise kursuse veeb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://KRISTO-KUKK@github.com/KRISTO-KUKK/veeb.git"
+  },
+  "keywords": [
+    "õppetöö",
+    "node.js",
+    "express.js",
+    "Tallinna",
+    "Ülikool"
+  ],
+  "author": "Kristo Kukk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KRISTO-KUKK/veeb/issues"
+  },
+  "homepage": "https://github.com/KRISTO-KUKK/veeb#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
