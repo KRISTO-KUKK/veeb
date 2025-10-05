@@ -4,6 +4,7 @@ const fs = require("fs");
 //päringu lahtiharutaja POST jaoks
 const bodyparser = require("body-parser");
 const textRef = "./public/txt/vanasonad.txt";
+const textRef2 = "./public/txt/visitlog.txt";
 //käivitan express.js funktsiooni ja panen nimeks "app"
 const app = express();
 //määran veebilehtede mallide renderdamise mootori (view-engine)
@@ -37,11 +38,27 @@ app.get("/vanasonad", (req, res)=>{
 	});
 });
 
+app.get("/visitlog", (req, res)=>{
+	let visitlog = [];
+	fs.readFile(textRef2, "utf8", (err, data)=>{
+			if(err){
+				res.render("visitlog", {heading: "Registreeritud kasutajad", listData: ["Ei leidnud ühtegi kasutajat"]});
+			} else {
+				visitlog = data.split("\n");
+				res.render("visitlog", {heading: "Registreeritud kasutajad", listData: visitlog});
+			}
+	});
+});
+
 app.get("/regvisit", (req, res)=>{
 	res.render("regvisit");
 });
 
 app.post("/regvisit", (req, res)=>{
+	res.render("regvisit");
+});
+
+app.post("/salvestatud", (req, res)=>{
 	console.log(req.body);
 	//avan teksifaili kirjutamiseks sellisel moel, et kui teda pole siis luuakse
 	fs.open("public/txt/visitlog.txt", "a", (err, file)=>{
@@ -49,12 +66,12 @@ app.post("/regvisit", (req, res)=>{
 				throw(err);
 			} else {
 				//faili senisene sisule lisamine
-				fs.appendFile("public/txt/visitlog.txt", req.body.nameInput + " \n", (err)=>{
+				fs.appendFile("public/txt/visitlog.txt", req.body.firstNameInput + " " + req.body.lastNameInput + ", " + dateET.fullDate() + " kell " + dateET.fullTime() +  " \n", (err)=>{
 					if(err){
 						throw(err);
 					} else {
 						console.log("Salvestatud!");
-						res.render("regvisit");
+						res.render("salvestatud", {firstNameInput: req.body.firstNameInput, lastNameInput: req.body.lastNameInput});
 					}
 				});
 			}

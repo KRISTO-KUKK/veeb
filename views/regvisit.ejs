@@ -14,9 +14,11 @@
 	</ul>
 	<hr>
 	<h2>Pane end külastajana kirja</h2>
-	<form method="POST">
-		<label for="nameInput">Nimi</label>
-		<input id="nameInput" type="text" name="nameInput" placeholder="Kirjuta siia oma nimi...">
+	<form method="POST" action="/salvestatud">
+		<label for="firstNameInput">Eesnimi</label>
+		<input id="firstNameInput" type="text" name="firstNameInput" placeholder="Kirjuta siia oma eesnimi...">
+		<label for="lastNameInput">Perekonnanimi</label>
+		<input id="lastNameInput" type="text" name="lastNameInput" placeholder="Kirjuta siia oma perenimi...">
 		<input id="regSubmit" type="submit" name="regSubmit" value="Salvesta">
 	</form>
 </body>
