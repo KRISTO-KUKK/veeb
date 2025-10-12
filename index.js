@@ -98,6 +98,28 @@ app.post("/Eestifilm/inimesed_add", (req, res)=>{
 	}
 });
 
+app.get("/Eestifilm/ametid_add", (req, res)=>{
+	res.render("ametid_add", {notice: "ootan sisestust"});
+});
+
+app.post("/Eestifilm/ametid_add", (req, res)=>{
+	console.log(req.body);
+	//kas andmed on olemas
+	if(!req.body.positionNameInput || !req.body.descriptionInput){
+		res.render("ametid_add", {notice: "Andmeid on puudu vöi ebakorrektsed"});
+	} else {
+		let sqlReq = "INSERT INTO position (position_name, description) VALUES (?,?)";
+		conn.execute(sqlReq, [req.body.positionNameInput, req.body.descriptionInput], (err, sqlres)=>{
+			if(err){
+				res.render("ametid_add", {notice: "andmete salvestamine ebaönnestus"});
+				console.log(err);
+			} else {
+				res.render("ametid_add", {notice: "salvestamine önnestus"});
+			}
+		});
+	}
+});
+
 app.get("/Eestifilm/inimesed", (req, res)=>{
 	const sqlReq = "SELECT * FROM person";
 	conn.execute(sqlReq, (err, sqlres)=>{
@@ -106,6 +128,18 @@ app.get("/Eestifilm/inimesed", (req, res)=>{
 		} else {
 			console.log(sqlres);
 			res.render("filmiinimesed", {personList: sqlres});
+		}
+	});
+});
+
+app.get("/Eestifilm/ametid", (req, res)=>{
+	const sqlReq = "SELECT * FROM position";
+	conn.execute(sqlReq, (err, sqlres)=>{
+		if(err){
+			throw(err);
+		} else {
+			console.log(sqlres);
+			res.render("ametid", {positionList: sqlres});
 		}
 	});
 });

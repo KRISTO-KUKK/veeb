@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Kristo Kukk</title>
+</head>
+<body>
+	<img src="../images/test.jpg" alt="Kursuse bänner">
+	<h1>Veebileht,</h1>
+	<p>mis sisaldab tõsiseltvöetavat <a href="https://taflheim.io/">sisu</a>!</p>
+	<hr>
+	<ul>
+	<li><a href="/">Avaleht</a></li>
+	<li><a href="/Eestifilm">EESTI FILM</a></li>
+	</ul>
+	<hr>
+	<li><a href="/Eestifilm/ametid_add">lisa uus amet</a></li>
+	<h2>Filmiinimeste ametid</h2>
+	<ol>
+		<% positionList.forEach(function(listItem){ %>
+			<li><%= listItem.position_name %>, KIRJELDUS: <%= listItem.description %></li>
+		<% });%>
+	</ol>
+</body>
+
+</html>
