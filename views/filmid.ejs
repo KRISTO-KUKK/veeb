@@ -16,7 +16,7 @@
 	<hr>
 	<h2>Eesti filmid</h2>
 	<p>Lisa uus film</p>
-	<form method="POST">
+	<form action="/Eestifilm/filmid" method="POST">
 	  <label for="titleInput">Filmi nimi</label>
 	  <input id="titleInput" name="titleInput" type="text" placeholder="Filmi nimi" required>
 	  <br>
@@ -27,7 +27,6 @@
 	  <input id="durationInput" name="durationInput" type="number" placeholder="Filmi kestus" required>
 	  <br>
 	  <input id="personSubmit" name="personSubmit" type="submit" value="Salvesta">
-	  <p>Staatus: <%= notice %></p>
 	  <hr>
 	<ol>
 		<% movieList.forEach(function(listItem){ %>

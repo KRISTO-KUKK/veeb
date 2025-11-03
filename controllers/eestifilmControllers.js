@@ -43,6 +43,100 @@ const inimesed = async (req,res) =>{
 	}
 };
 
+const filmid = async (req,res) =>{
+	let conn;
+	const sqlReq = "SELECT * FROM movie";
+	try {
+		conn = await mysql.createConnection(dbConf);
+		console.log("DB ühendus alustatud");
+		const [rows, fields] = await conn.execute(sqlReq);
+		res.render("filmid", {movieList: rows, notice: req.query.notice || "ootan andmeid"});
+	}
+	catch {
+		console.log("Viga!");
+		res.render("filmid", {movieList: [], notice: "Viga andmete laadimisel"});
+	}
+	finally {
+		if(conn){
+			await conn.end();
+			console.log("DB ühendus katkestatud");
+		}
+	}
+};
+
+const filmidPost = async (req, res) =>{
+	let conn;
+	let sqlReq = "INSERT INTO movie (title, production_year, duration) VALUES (?,?,?)";
+	
+	if(!req.body.titleInput || !req.body.durationInput || !req.body.yearInput || req.body.yearInput >= new Date()){
+	  return res.redirect(req.baseUrl + "/filmid");
+	}
+	
+	else {
+		try {
+			conn = await mysql.createConnection(dbConf);
+			console.log("Andmebaasiühendus loodud!");
+			const [result] = await conn.execute(sqlReq, [req.body.titleInput, req.body.yearInput, req.body.durationInput]);
+			console.log("Salvestati kirje: " + result.insertId);
+			return res.redirect(req.baseUrl + "/filmid");
+		}
+		catch(err) {
+			console.log("Viga: " + err);
+			return res.redirect(req.baseUrl + "/filmid");
+		}
+		finally {
+			if(conn){
+			await conn.end();
+				console.log("Andmebaasiühendus on suletud!");
+			}
+		}
+	}
+};
+
+const ametid = async (req,res) =>{
+	let conn;
+	const sqlReq = "SELECT * FROM `position`";
+	try {
+		conn = await mysql.createConnection(dbConf);
+		console.log("DB ühendus alustatud");
+		const [rows, fields] = await conn.execute(sqlReq);
+		res.render("ametid", {roleList: rows, notice: req.query.notice || "ootan andmeid"});
+	}
+	catch {
+		console.log("Viga!");
+		res.render("ametid", {roleList: [], notice: "Viga andmete laadimisel"});
+	}
+	finally {
+		if(conn){
+			await conn.end();
+			console.log("DB ühendus katkestatud");
+		}
+	}
+};
+
+const ametidPost = async (req, res) =>{
+	let conn;
+	let sqlReq = "INSERT INTO `position` (position_name, description) VALUES (?,?)"
+	
+	try {
+		conn = await mysql.createConnection(dbConf);
+		console.log("Andmebaasiühendus loodud!");
+		const [result] = await conn.execute(sqlReq, [req.body.positionInput, req.body.descriptionInput]);
+		console.log("Salvestati kirje: " + result.insertId);
+		return res.redirect(req.baseUrl + "/ametid");
+	}
+	catch(err) {
+		console.log("Viga: " + err);
+		return res.redirect(req.baseUrl + "/ametid");
+	}
+	finally {
+		if(conn){
+		await conn.end();
+			console.log("Andmebaasiühendus on suletud!");
+		}
+	}
+};
+
 //@desc page for adding people in Estonian Film industry
 //@route GET /Eestifilm/inimesed_add
 //@access public
@@ -90,50 +184,13 @@ const inimesedAddPost = async (req, res) =>{
 	}
 };
 
-const ametidAdd = (req, res)=>{
-	res.render("ametid_add", {notice: "ootan sisestust"});
-};
-
-//app.post("/Eestifilm/ametid_add", (req, res)=>{
-const ametidAddPost = async (req, res)=>{
-	console.log(req.body);
-	conn = await mysql.createConnection(dbConf);
-	//kas andmed on olemas
-	if(!req.body.positionNameInput || !req.body.descriptionInput){
-		res.render("ametid_add", {notice: "Andmeid on puudu vöi ebakorrektsed"});
-	} else {
-		let sqlReq = "INSERT INTO position (position_name, description) VALUES (?,?)";
-		conn.execute(sqlReq, [req.body.positionNameInput, req.body.descriptionInput], (err, sqlres)=>{
-			if(err){
-				res.render("ametid_add", {notice: "andmete salvestamine ebaönnestus"});
-				console.log(err);
-			} else {
-				res.render("ametid_add", {notice: "salvestamine önnestus"});
-			}
-		});
-	}
-};
-
-//app.get("/Eestifilm/ametid", (req, res)=>{
-const ametid = async (req, res)=>{
-	const sqlReq = "SELECT * FROM position";
-	conn = await mysql.createConnection(dbConf);
-	conn.execute(sqlReq, (err, sqlres)=>{
-		if(err){
-			throw(err);
-		} else {
-			console.log(sqlres);
-			res.render("ametid", {positionList: sqlres});
-		}
-	});
-};
-
 module.exports = {
 	eestifilm,
 	inimesed,
 	inimesedAdd,
 	inimesedAddPost,
 	ametid,
-	ametidAdd,
-	ametidAddPost
+	ametidPost,
+	filmid,
+	filmidPost,
 }

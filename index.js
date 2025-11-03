@@ -18,7 +18,8 @@ app.set("view engine", "ejs");
 //määran ühe päris kataloogi avalikult kättesaadavaks
 app.use(express.static("public"));
 //parsime päringu URL-i, lipp false, kui ainult tekst ja true, kui muid andmeid kataloogi
-app.use(bodyparser.urlencoded({extended: false}));
+//kui tuleb vormist ainult tekst, siis false, muidu true
+app.use(bodyparser.urlencoded({extended: true}));
 
 /* const dbConf = {
 	host: dbInfo.configData.host,
@@ -98,5 +99,9 @@ app.post("/salvestatud", (req, res)=>{
 //Eesti filmi marsruudid
 const eestifilmRouter = require("./routes/eestifilmRoutes");
 app.use("/Eestifilm", eestifilmRouter);
+
+//Galerii fotode üleslaadimine
+const photoupRouter = require("./routes/photoupRoutes");
+app.use("/galleryphotoupload", photoupRouter);
 
 app.listen(5106);
