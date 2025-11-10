@@ -1,6 +1,7 @@
 const express = require("express");
 const dateET = require("./src/dateTimeET");
 const fs = require("fs");
+const dbInfo = require("../../vp2025config");
 //päringu lahtiharutaja POST jaoks
 const bodyparser = require("body-parser");
 //SQL andmebaasi moodul
@@ -21,16 +22,33 @@ app.use(express.static("public"));
 //kui tuleb vormist ainult tekst, siis false, muidu true
 app.use(bodyparser.urlencoded({extended: true}));
 
-/* const dbConf = {
+
+const dbConf = {
 	host: dbInfo.configData.host,
 	user: dbInfo.configData.user,
 	password: dbInfo.configData.passWord,
 	database: dbInfo.configData.dataBase
-}; */
+};
 
-app.get("/", (req, res)=>{
-	//res.send("Express.js käivitus ja serveerib veebi");
-	res.render("index");
+app.get("/", async (req, res) => {
+  let conn;
+  const sqlLatestPublic = "SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=? AND deleted IS NULL)";
+
+  try {
+    conn = await mysql.createConnection(dbConf);
+    const [rows] = await conn.execute(sqlLatestPublic, [3]);
+    const photoName = rows.length ? rows[0].filename : null;
+
+    res.render("index", { photoName });
+  } catch (err) {
+    console.error(err);
+    res.render("index", { photoName: null });
+  } finally {
+    if (conn) {
+      await conn.end();
+      console.log("DB suletud");
+    }
+  }
 });
 
 app.get("/timenow", (req, res)=>{
