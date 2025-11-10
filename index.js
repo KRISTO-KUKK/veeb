@@ -122,4 +122,7 @@ app.use("/Eestifilm", eestifilmRouter);
 const photoupRouter = require("./routes/photoupRoutes");
 app.use("/galleryphotoupload", photoupRouter);
 
+const galleryRouter = require("./routes/galleryRoutes");
+app.use("/gallery", galleryRouter);
+
 app.listen(5106);

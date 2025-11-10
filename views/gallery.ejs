@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Kristo Kukk</title>
+	<link rel="stylesheet" href="/style/gallery.css">
+	<script src="/script/gallery.js" defer ></script>
+</head>
+<body>
+	<img src="../images/test.jpg" alt="Kursuse bänner">
+	<h1>Veebileht,</h1>
+	<p>mis sisaldab tõsiseltvöetavat <a href="https://taflheim.io/">sisu</a>!</p>
+	<hr>
+	<ul>
+	<li><a href="/">Avaleht</a></li>
+	</ul>
+	<hr>
+	<dialog id="modal" class="modalarea">
+	  <span id="modalClose" class="modalClose">&times;</span>
+      <div class="modalhorizontal">
+	    <div class="modalvertical">
+		  <p id="modalCaption"></p>
+		  <img id="modalImage" src="/images/empty.png" alt="galeriipilt">
+	    </div>
+	  </div>
+	</dialog>
+	<h2>Fotogalerii</h2>
+	<div id="gallery" class="gallery">
+		<% galleryData.forEach(function(image){ %>
+		  <img src="<%=imagehref%><%= image.href %>" alt="<%= image.alt %>" class="thumbs" data-filename="<%= image.href %>">
+		<% }); %>
+	</div>
+</body>
+
+</html>
