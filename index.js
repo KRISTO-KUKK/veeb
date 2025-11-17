@@ -122,7 +122,12 @@ app.use("/Eestifilm", eestifilmRouter);
 const photoupRouter = require("./routes/photoupRoutes");
 app.use("/galleryphotoupload", photoupRouter);
 
+//Galerii marsruudid
 const galleryRouter = require("./routes/galleryRoutes");
 app.use("/gallery", galleryRouter);
+
+//Konto loomise marsruudid
+const signupRouter = require("./routes/signupRoutes");
+app.use("/signup", signupRouter);
 
 app.listen(5106);

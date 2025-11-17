@@ -25,6 +25,7 @@
 	  </div>
 	</dialog>
 	<h2>Fotogalerii</h2>
+	<p><%- links %></p>
 	<div id="gallery" class="gallery">
 		<% galleryData.forEach(function(image){ %>
 		  <img src="<%=imagehref%><%= image.href %>" alt="<%= image.alt %>" class="thumbs" data-filename="<%= image.href %>">
